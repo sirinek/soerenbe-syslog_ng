@@ -1,5 +1,7 @@
 @version: <%= scope.lookupvar('syslog_ng::version') %>
+<% if scope.lookupvar('::osfamily') == "Debian" -%>
 @include "scl.conf"
+<% end %>
 <% if scope.lookupvar('syslog_ng::include_tty10') -%>
 @include "`scl-root`/system/tty10.conf"
 <% end %>
@@ -18,6 +20,7 @@ options {
     perm(<%= scope.lookupvar('syslog_ng::default_perm') %>);
     stats_freq(<%= scope.lookupvar('syslog_ng::stats_freq') %>);
     mark_freq(<%= scope.lookupvar('syslog_ng::mark_freq') %>);
+    normalize_hostnames(<%= scope.lookupvar('syslog_ng::normalize_hostnames') %>);
 };
 
 @include "<%= scope.lookupvar('syslog_ng::config_dir') -%>/*.conf"

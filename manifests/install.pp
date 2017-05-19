@@ -13,14 +13,16 @@ class syslog_ng::install {
     purge   => true,
     force   => true,
   }
-  if $::lsbdistcodename == 'stretch' {
-    file { '/etc/syslog-ng/scl.conf':
-      source => 'puppet:///modules/syslog_ng/scl.conf.stretch',
+  if $::osfamily == "Debian" {
+    if $::lsbdistcodename == 'stretch' {
+      file { '/etc/syslog-ng/scl.conf':
+        source => 'puppet:///modules/syslog_ng/scl.conf.stretch',
+      }
     }
-  }
-  else {
-    file { '/etc/syslog-ng/scl.conf':
-      source => 'puppet:///modules/syslog_ng/scl.conf',
+    else {
+      file { '/etc/syslog-ng/scl.conf':
+        source => 'puppet:///modules/syslog_ng/scl.conf',
+      }
     }
   }
   file { $::syslog_ng::config_dir:
