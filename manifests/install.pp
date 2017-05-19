@@ -35,13 +35,15 @@ class syslog_ng::install {
     content => template('syslog_ng/syslog-ng.conf.erb'),
     notify  => Service[syslog_ng],
   }
-  # Basic logging
-  syslog_ng::source::system {$::syslog_ng::local_source: }
-  syslog_ng::default {'default':
-    source    => $::syslog_ng::local_source,
-    directory => $::syslog_ng::system_log_dir,
-    owner     => 'root',
-    group     => 'syslog',
-    perm      => '0775',
+  if $create_basic_setup {
+    # Basic logging
+    syslog_ng::source::system {$::syslog_ng::local_source: }
+    syslog_ng::default {'default':
+      source    => $::syslog_ng::local_source,
+      directory => $::syslog_ng::system_log_dir,
+      owner     => 'root',
+      group     => 'syslog',
+      perm      => '0775',
+    }
   }
 }

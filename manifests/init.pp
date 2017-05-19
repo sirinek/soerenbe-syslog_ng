@@ -62,7 +62,8 @@ class syslog_ng (
   $include_tty10             = $syslog_ng::params::include_tty10,
   $log_fifo_size             = $syslog_ng::params::log_fifo_size,
   $log_fifo_size_destination = $syslog_ng::params::log_fifo_size_destination,
-  $normalize_hostnames       = $syslog_ng::params::normalize_hostnames
+  $normalize_hostnames       = $syslog_ng::params::normalize_hostnames,
+  $create_basic_setup        = $syslog_ng::params::create_basic_setup
 ) inherits ::syslog_ng::params {
   $fragments = [
     $syslog_ng::params::config_file_sources,

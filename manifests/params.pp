@@ -1,10 +1,27 @@
 # Standard parameters for the modul
 class syslog_ng::params {
-  if $::lsbdistcodename == 'stretch' {
-    $version        = '3.8'
-  }
-  else {
-    $version        = '3.5'
+
+  case $::osfamily {
+    'Debian': {
+      if $::lsbdistcodename == 'stretch' {
+        $version        = '3.8'
+      }
+      else {
+        $version        = '3.5'
+      }
+    }
+    'RedHat': {
+      if versioncmp($::operatingsystemmajrelease, '7') == 0 { 
+        $version        = '3.5'
+      }
+      if versioncmp($::operatingsystemmajrelease, '6') == 0 { 
+        $version        = '3.2'
+      }
+      if versioncmp($::operatingsystemmajrelease, '5') == 0 { 
+        $version        = '2.1'
+      }
+    }
+    default: { $version = '3.5' }
   }
   $system_log_dir = '/var/log'
   $config_dir     = '/etc/syslog-ng/conf.d'
@@ -15,6 +32,10 @@ class syslog_ng::params {
   # See: http://www.balabit.com/sites/default/files/documents/syslog-ng-ose-3.5-guides/en/syslog-ng-ose-guide-admin/html/index.html
   # See: http://www.balabit.com/sites/default/files/documents/syslog-ng-ose-3.5-guides/en/syslog-ng-ose-guide-admin/html/reference-options.html
   #
+  
+  # Do we want this module to setup a bunch of basic working defaults for logging?
+  $create_basic_setup        = true
+
   # Global permissions
   $create_dirs               = true   # If true, all subdirectories are created. TODO: Maybe define for each file?
   $default_owner             = 'root'
